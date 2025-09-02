@@ -5,5 +5,19 @@ use std::sync::Arc;
 async fn main() -> Result<() , Box<dyn std::error::Error>> {
 
     tracing_subscriber::registry()
-    .init();
+        .with(EnvFilter::new(
+            std::env::var("RUST_LOG").unwrap_or_else(|_| "info".into()),
+        ))
+        .with(tracing_subscriber::fmt::layer())
+        .init();
+
+    dotenvy::dotenv().ok();
+
+    let database = Database::new().await?;
+    let shared_state = Arc::new(database);
+
+    let app = Router::new()
+        .route("/health", get(health_check))
+        .route("/payments", post(payment_handler))
+        .with_state(shared_state);
 }
