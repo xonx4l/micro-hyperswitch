@@ -35,3 +35,36 @@ impl std::fmt::Display for PaymentStatus {
         }
     }
 }
+
+#[derive(Debug, Clone)]
+pub struct Payment {
+    pub id: Uuid,
+    pub amount: i64,
+    pub currency: String,
+    pub payment_method: String,
+    pub status: PaymentStatus,
+    pub connector_used: String,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
+}
+
+impl Payment {
+    pub fn new(
+        amount: i64,
+        currency: String,
+        payment_method: String,
+        connector_used: String,
+    ) -> Self {
+        let now = Utc::now();
+        Self {
+            id: Uuid::new_v4(),
+            amount,
+            currency,
+            payment_method,
+            status: PaymentsStatus::Processing,
+            connector_used,
+            created_at: now,
+            updated_at: now,
+        }
+    }
+}
