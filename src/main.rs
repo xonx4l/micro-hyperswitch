@@ -1,4 +1,8 @@
-use axum::{ routing::{post,get},Router,http::status};
+use axum::{
+    routing::{post, get},
+    Router,
+    http::StatusCode,
+};
 use std::sync::Arc;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
@@ -10,9 +14,8 @@ mod handlers;
 use database::Database;
 use handlers::payment_handler;
 
-
-async fn main() -> Result<() , Box<dyn std::error::Error>> {
-
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing_subscriber::registry()
         .with(EnvFilter::new(
             std::env::var("RUST_LOG").unwrap_or_else(|_| "info".into()),
@@ -31,8 +34,8 @@ async fn main() -> Result<() , Box<dyn std::error::Error>> {
         .with_state(shared_state);
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await?;
-    tracing::info!("🚀 Micro Hyperswitch server starting on http://127.0.0.1:3000");
-
+    tracing::info!("🚀 Mini Hyperswitch server starting on http://127.0.0.1:3000");
+    
     axum::serve(listener, app).await?;
     Ok(())
 }
