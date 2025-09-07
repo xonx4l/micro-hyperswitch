@@ -1,10 +1,10 @@
 use serde::{Deserialize, Serialize};
-use chrono::{DateTime , Utc};
+use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
 #[derive(Debug, Deserialize)]
 pub struct PaymentRequest {
-    pub amount: i64,
+    pub amount: i64, 
     pub currency: String,
     pub payment_method: String,
 }
@@ -61,7 +61,7 @@ impl Payment {
             amount,
             currency,
             payment_method,
-            status: PaymentsStatus::Processing,
+            status: PaymentStatus::Processing,
             connector_used,
             created_at: now,
             updated_at: now,
