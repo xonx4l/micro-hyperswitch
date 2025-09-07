@@ -1,5 +1,14 @@
 use axum::{ routing::{post,get},Router,http::status};
 use std::sync::Arc;
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
+
+mod models;
+mod connectors;
+mod database;
+mod handlers;
+
+use database::Database;
+use handlers::payment_handler;
 
 
 async fn main() -> Result<() , Box<dyn std::error::Error>> {
